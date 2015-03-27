@@ -29,26 +29,26 @@ namespace BankAccountMVC.Controllers
 
             var model = am.CreateBankAccount();
 
-            return RedirectToAction("Edit", model);
+            return View(model);
         }
 
-        //
-        // GET: /BasicAccount/Edit/5
+        [HttpPost]
         public ActionResult Edit(BasicAccount model)
         {
-            if (model.BasicAccountID != 0) {
+            if (ModelState.IsValid)
+            {
                 AccountManager am = new AccountManager(repo, 1);
                 am.CurrentAccount = model;
                 am.Save();
-                RedirectToAction("Index");
+                return RedirectToAction("Index");
             }
             return View(model);
         }
 
-        public ActionResult Edit(int basicAccountID)
+        public ActionResult Edit(int id)
         {
             AccountManager am = new AccountManager(repo, 1);
-            var model = am.GetBankAccount(basicAccountID);
+            var model = am.GetBankAccount(id);
             return View(model);
         }
         //

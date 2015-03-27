@@ -4,3 +4,13 @@
 }
 
 <h2>Edit</h2>
+@Html.ValidationSummary(false, "Please ensure all fields are valid.")
+@using (Html.BeginForm("Edit", "BasicAccount"))
+{
+
+    @Html.EditorForModel()
+
+    <button type="submit">
+        Submit
+    </button>
+}

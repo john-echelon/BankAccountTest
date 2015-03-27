@@ -58,7 +58,18 @@ namespace BankAccountDB.Concrete
 
         public void UpdateBasicAccount(BasicAccount entity)
         {
-            context.Entry(entity).State = entity.BasicAccountID == 0 ?EntityState.Added : EntityState.Modified; 
+            if( entity.BasicAccountID == 0 ){
+                context.Entry(entity).State =EntityState.Added;
+            }
+            else{
+                var dbEntry = context.BasicAccounts.Find(entity.BasicAccountID);
+                if (dbEntry != null) {
+                    dbEntry.AccountType = entity.AccountType;
+                    dbEntry.Balance = entity.Balance;
+                    dbEntry.InterestRate = entity.InterestRate;
+                    dbEntry.StatusOfAccount = entity.StatusOfAccount;
+                }
+            }
         }
 
         public BasicAccount DeleteBasicAccount(int entityID)

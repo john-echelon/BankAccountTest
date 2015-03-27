@@ -8,7 +8,7 @@ namespace BankAccountBL.Abstract
         BasicAccount CurrentAccount { get; set; }
         UserProfile CurrentUser { get; set; }
         BasicAccount CreateBankAccount();
-        BasicAccount GetBankAccount();
+        BasicAccount GetBankAccount(int id);
         void UpdateInterest();
         void Withdraw(decimal amount);
         void Deposit(decimal amount);
