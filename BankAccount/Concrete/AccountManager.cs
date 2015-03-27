@@ -36,7 +36,7 @@ namespace BankAccountBL.Concrete
             };
         }
 
-        public BasicAccount GetBankAccount(int id)
+        public BasicAccount SetBankAccount(int id)
         {
             CurrentAccount = CurrentUser.Accounts.Where(acct => acct.BasicAccountID == id).SingleOrDefault();
 
@@ -57,6 +57,16 @@ namespace BankAccountBL.Concrete
             {
                 CurrentAccount.InterestRate = .03f;
             }
+        }
+
+        public void UpdateBankAccount()
+        {
+            repo.UpdateBasicAccount(CurrentAccount);
+        }
+                  
+        public BasicAccount DeleteBankAccount(int id)
+        {
+            return repo.DeleteBasicAccount(id);
         }
 
         public void Withdraw(decimal amount)
@@ -82,8 +92,6 @@ namespace BankAccountBL.Concrete
 
         public void Save()
         {
-            repo.UpdateBasicAccount(CurrentAccount);
-
             repo.SaveChanges();
         }
        

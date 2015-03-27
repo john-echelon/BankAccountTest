@@ -37,6 +37,9 @@
                         <td>
                 @Html.DisplayFor(modelItem => item.AccountType)
             </td>
+                        <td>
+                @Html.ActionLink("Remove", "Delete", new { id = item.BasicAccountID })
+            </td>
         </tr>
     }
 </table>

@@ -39,6 +39,7 @@ namespace BankAccountMVC.Controllers
             {
                 AccountManager am = new AccountManager(repo, 1);
                 am.CurrentAccount = model;
+                am.UpdateBankAccount();
                 am.Save();
                 return RedirectToAction("Index");
             }
@@ -48,14 +49,17 @@ namespace BankAccountMVC.Controllers
         public ActionResult Edit(int id)
         {
             AccountManager am = new AccountManager(repo, 1);
-            var model = am.GetBankAccount(id);
+            var model = am.SetBankAccount(id);
             return View(model);
         }
         //
         // GET: /BasicAccount/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            AccountManager am = new AccountManager(repo, 1);
+            var model = am.DeleteBankAccount(id);
+            am.Save();
+            return RedirectToAction("Index");
         }
 
     }
