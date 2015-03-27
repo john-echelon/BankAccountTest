@@ -59,6 +59,14 @@
     <Compile Include="Migrations\201503262055391_Updated_BasicAcccount_AddedProperty_AccountType.Designer.cs">
       <DependentUpon>201503262055391_Updated_BasicAcccount_AddedProperty_AccountType.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201503271929550_Added_BasicAccountUserProfileID.cs" />
+    <Compile Include="Migrations\201503271929550_Added_BasicAccountUserProfileID.Designer.cs">
+      <DependentUpon>201503271929550_Added_BasicAccountUserProfileID.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201503271940345_Added_UserProfile.Accounts.cs" />
+    <Compile Include="Migrations\201503271940345_Added_UserProfile.Accounts.Designer.cs">
+      <DependentUpon>201503271940345_Added_UserProfile.Accounts.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -72,6 +80,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201503262055391_Updated_BasicAcccount_AddedProperty_AccountType.resx">
       <DependentUpon>201503262055391_Updated_BasicAcccount_AddedProperty_AccountType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201503271929550_Added_BasicAccountUserProfileID.resx">
+      <DependentUpon>201503271929550_Added_BasicAccountUserProfileID.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201503271940345_Added_UserProfile.Accounts.resx">
+      <DependentUpon>201503271940345_Added_UserProfile.Accounts.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

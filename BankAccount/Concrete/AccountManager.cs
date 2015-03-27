@@ -10,43 +10,37 @@ namespace BankAccountBL.Concrete
 {
     public class AccountManager : BankAccountBL.Abstract.IAccountManager
     {
-        public BasicAccount CurrentAccount {get; set;}
         public UserProfile CurrentUser { get; set; }
+        public BasicAccount CurrentAccount { get; set; }
 
         private IBankAccountRepo repo;
-        public AccountManager(IBankAccountRepo repo)
+        public AccountManager(IBankAccountRepo repo, int userProfileID)
         {
             this.repo = repo;
+            CurrentUser = repo.UserProfiles.Where(up => up.UserProfileID == 1).Single();
         }
 
-        public void CreateBankAccount(UserProfile profile)
+        public BasicAccount CreateBankAccount()
         {
-            if(profile == null || profile.UserProfileID ==0){
+            if (CurrentUser == null || CurrentUser.UserProfileID == 0)
+            {
                 throw new ArgumentNullException("User Profile is not setup.");
             }
 
-            CurrentAccount = new BasicAccount
+            return new BasicAccount
             {
-                BasicAccountID = CurrentUser.UserProfileID,
+                UserProfileID = CurrentUser.UserProfileID,
                 Balance = 0.0m,
                 InterestRate = 0,
                 StatusOfAccount = BasicAccount.AccountStatus.Open
             };
         }
 
-        public void UpdateBankAccount()
+        public BasicAccount GetBankAccount(int id)
         {
-            repo.UpdateBasicAccount(CurrentAccount);
-        }
+            CurrentAccount = CurrentUser.Accounts.Where(acct => acct.BasicAccountID == id).SingleOrDefault();
 
-        public void GetBankAccount(UserProfile profile)
-        { 
-            var result =
-            (from existingAccount in repo.BasicAccounts
-            where existingAccount.BasicAccountID == profile.UserProfileID
-            select existingAccount).SingleOrDefault();
-
-            CurrentAccount = result;
+            return CurrentAccount;
         }
 
         public void UpdateInterest()
@@ -88,6 +82,8 @@ namespace BankAccountBL.Concrete
 
         public void Save()
         {
+            repo.UpdateBasicAccount(CurrentAccount);
+
             repo.SaveChanges();
         }
        

@@ -10,72 +10,47 @@ namespace BankAccountMVC.Controllers
 {
     public class BasicAccountController : Controller
     {
+        private BankAccountRepo repo = new BankAccountRepo();
+        public BasicAccountController() {
+        }
         //
         // GET: /BasicAccount/
         public ActionResult Index()
         {
-            return View();
+            AccountManager am = new AccountManager(repo, 1);
+
+            return View(am.CurrentUser);
         }
 
-        //
-        // GET: /BasicAccount/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
-        //
-        // GET: /BasicAccount/Create
         public ActionResult Create()
         {
-            return View();
-        }
+            var repo = new BankAccountRepo();
+            AccountManager am = new AccountManager(repo, 1);
 
-        //
-        // POST: /BasicAccount/Create
-        [HttpPost]
-        public ActionResult Create(FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add insert logic here
+            var model = am.CreateBankAccount();
 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+            return RedirectToAction("Edit", model);
         }
 
         //
         // GET: /BasicAccount/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Edit(BasicAccount model)
         {
-            var repo = new BankAccountRepo();
-            AccountManager am = new AccountManager(repo);
-            am.GetBankAccount(new UserProfile{ UserProfileID= 1});
-
-            return View();
+            if (model.BasicAccountID != 0) {
+                AccountManager am = new AccountManager(repo, 1);
+                am.CurrentAccount = model;
+                am.Save();
+                RedirectToAction("Index");
+            }
+            return View(model);
         }
 
-        //
-        // POST: /BasicAccount/Edit/5
-        [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(int basicAccountID)
         {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+            AccountManager am = new AccountManager(repo, 1);
+            var model = am.GetBankAccount(basicAccountID);
+            return View(model);
         }
-
         //
         // GET: /BasicAccount/Delete/5
         public ActionResult Delete(int id)
@@ -83,21 +58,5 @@ namespace BankAccountMVC.Controllers
             return View();
         }
 
-        //
-        // POST: /BasicAccount/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
     }
 }

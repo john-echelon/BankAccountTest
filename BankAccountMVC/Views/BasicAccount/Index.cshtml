@@ -1,0 +1,44 @@
+﻿@model BankAccountDB.Concrete.Entities.UserProfile
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index - @Html.LabelForModel()</h2>
+
+@Html.DisplayForModel()
+
+<table class="Grid">
+    <tr>
+        <th>
+            Account ID
+        </th>
+        <th>
+            Balance
+        </th>
+        <th>
+            Interest Rate
+        </th>
+        <th>
+            Account Type
+        </th>
+    </tr>
+    @foreach (var item in Model.Accounts)
+    {
+        <tr>
+            <td>
+                @Html.ActionLink(item.BasicAccountID.ToString(), "Edit", new { id = item.BasicAccountID })
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Balance)
+            </td>
+                        <td>
+                @Html.DisplayFor(modelItem => item.InterestRate)
+            </td>
+                        <td>
+                @Html.DisplayFor(modelItem => item.AccountType)
+            </td>
+        </tr>
+    }
+</table>
+
+@Html.ActionLink("Create Basic Account", "Create")

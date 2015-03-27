@@ -5,3 +5,15 @@
 
 <h2>Create</h2>
 
+
+<h2>Create Person</h2>
+@Html.ValidationSummary(false, "Please ensure all fields are valid.")
+@using (Html.BeginForm("Create", "BasicAccount"))
+{
+
+    @Html.EditorForModel()
+
+    <button type="submit">
+        Submit
+    </button>
+}

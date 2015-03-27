@@ -8,9 +8,11 @@ namespace BankAccountDB.Concrete.Entities
 {
     public class BasicAccount
     {
+        public int BasicAccountID { set; get; }
+
         public decimal Balance { set; get; }
         public double InterestRate { set; get; }
-        public int BasicAccountID { set; get; }
+        public int UserProfileID { set; get; }
 
         public AccountStatus StatusOfAccount { get; set; }
         public BankType AccountType { get; set; }

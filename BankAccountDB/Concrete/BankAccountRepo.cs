@@ -15,7 +15,7 @@ namespace BankAccountDB.Concrete
     
         public IQueryable<UserProfile> UserProfiles
         {
-           get{ return context.UserProfiles; }
+            get { return context.UserProfiles.Include(user => user.Accounts); }
         }
 
         public void UpdateUserProfile(UserProfile entity)
