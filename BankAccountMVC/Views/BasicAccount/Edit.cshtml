@@ -1,15 +1,23 @@
 ﻿@model BankAccountDB.Concrete.Entities.BasicAccount
-@{
-    ViewBag.Title = "Edit";
-}
 
-<h2>Edit</h2>
+<h2>@ViewBag.Title</h2>
 @Html.ValidationSummary(false, "Please ensure all fields are valid.")
 @using (Html.BeginForm("Edit", "BasicAccount"))
 {
+    <input id="UserProfileID" type="hidden" value="@Model.UserProfileID" name="UserProfileID" data-val-required="The UserProfileID field is required." data-val-number="The field UserProfileID must be a number." data-val="true">
+    <input id="" type="hidden" value="@Model.BasicAccountID" name="BasicAccountID" data-val-required="The BasicAccountID field is required." data-val-number="The field BasicAccountID must be a number." data-val="true">
+    
+    @Html.LabelFor(m => m.Balance)
+    @Html.TextBoxFor(m => m.Balance, new { @class = "form-control" })
 
-    @Html.EditorForModel()
+    @Html.LabelFor(m => m.InterestRate)
+    @Html.TextBoxFor(m => m.InterestRate, new { @class = "form-control" })
 
+    @Html.LabelFor(m => m.StatusOfAccount)
+    @Html.EditorFor(m => m.StatusOfAccount, new { @class = "form-control" })
+    
+    @Html.LabelFor(m => m.AccountType)
+    @Html.EditorFor(m => m.AccountType, new { @class = "form-control" })
     <button type="submit">
         Submit
     </button>

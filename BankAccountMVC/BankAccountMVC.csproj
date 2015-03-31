@@ -105,7 +105,6 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\BasicAccount\Create.cshtml" />
     <Content Include="Views\BasicAccount\Edit.cshtml" />
     <Content Include="Views\BasicAccount\Index.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Enum.cshtml" />

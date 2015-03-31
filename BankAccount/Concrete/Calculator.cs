@@ -24,7 +24,7 @@ namespace BankAccountBL.Concrete
             {
                 throw new DivideByZeroException("Denominator cannot be zero.");
             }
-            return (numerator / denominator) + (numerator % denominator);
+            return numerator / denominator;
         }
 
     }

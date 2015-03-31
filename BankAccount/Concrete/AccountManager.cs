@@ -14,10 +14,14 @@ namespace BankAccountBL.Concrete
         public BasicAccount CurrentAccount { get; set; }
 
         private IBankAccountRepo repo;
-        public AccountManager(IBankAccountRepo repo, int userProfileID)
+        public AccountManager(IBankAccountRepo repo)
         {
             this.repo = repo;
-            CurrentUser = repo.UserProfiles.Where(up => up.UserProfileID == 1).Single();
+        }
+
+        public UserProfile GetUserProfile(int id) {
+            CurrentUser = repo.UserProfiles.Where(up => up.UserProfileID == id).SingleOrDefault();
+            return CurrentUser;
         }
 
         public BasicAccount CreateBankAccount()
@@ -36,8 +40,10 @@ namespace BankAccountBL.Concrete
             };
         }
 
-        public BasicAccount SetBankAccount(int id)
+
+        public BasicAccount GetBankAccount(int id)
         {
+            //CurrentAccount = repo.BasicAccounts.Where(acct => acct.BasicAccountID == id).SingleOrDefault();
             CurrentAccount = CurrentUser.Accounts.Where(acct => acct.BasicAccountID == id).SingleOrDefault();
 
             return CurrentAccount;
@@ -76,13 +82,11 @@ namespace BankAccountBL.Concrete
                 throw new Exception("Overdraft protection enacted!");
             }
             CurrentAccount.Balance -= amount;
-            UpdateInterest();
         }
 
         public void Deposit(decimal amount)
         {
             CurrentAccount.Balance += amount;
-            UpdateInterest();
         }
 
         public virtual void AddInterests()

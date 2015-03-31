@@ -3,9 +3,9 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index - @Html.LabelForModel()</h2>
+<h2>@Html.LabelForModel()</h2>
 
-@Html.DisplayForModel()
+Account User: @Html.DisplayFor(m => m.UserName)
 
 <table class="Grid">
     <tr>
@@ -21,6 +21,10 @@
         <th>
             Account Type
         </th>
+        <th>
+            Account Status
+        </th>
+        <th></th>
     </tr>
     @foreach (var item in Model.Accounts)
     {
@@ -31,13 +35,16 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Balance)
             </td>
-                        <td>
+            <td>
                 @Html.DisplayFor(modelItem => item.InterestRate)
             </td>
-                        <td>
+            <td>
                 @Html.DisplayFor(modelItem => item.AccountType)
             </td>
-                        <td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StatusOfAccount)
+            </td>
+            <td>
                 @Html.ActionLink("Remove", "Delete", new { id = item.BasicAccountID })
             </td>
         </tr>

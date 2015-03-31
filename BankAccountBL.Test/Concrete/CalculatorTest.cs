@@ -23,24 +23,30 @@ namespace BankAccountBL.Test.Concrete
             //Assert
             Assert.AreEqual(expected, actual);
         }
+
         [Test]
         public void Divide_GivenTwoNumbers_QuotientOfDivisorDividend()
         {
             //Arrange
             var calc = new Calculator();
-            Decimal expected = (5 / 3m) + (5 % 3m);
+            Decimal expected = 1.6667m;
 
-            var actual = calc.Divide(5, 3m);
+            //Act
+            var actual = calc.Divide(5m, 3m);
 
-            Assert.AreEqual(expected, actual);
+            //Assert
+            Assert.That(Math.Abs(expected - actual), Is.LessThan(0.0001M));
         }
 
         [Test]
         public void Divide_GivenTwoNumberWhereDivisorIsZero_ThrowDivideByZeroException()
         {
-
+            //Arrange
+            var calc = new Calculator();
+            
+            //Act Assert
+            Exception ex = Assert.Throws<DivideByZeroException>(()=> calc.Divide(9, 0));
+            Assert.That(ex.Message, Is.EqualTo("Denominator cannot be zero."));
         }
-        //TODO: Write out Tests for Multiply and Divide to provide as in-lesson examples, this should cover tests failing and coverage
-
     }
 }
