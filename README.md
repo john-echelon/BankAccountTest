@@ -14,7 +14,7 @@ A less trivial example that attempts to show the use of a mock, to fake the depe
 
 * Introduces mock objects using the Moq framework.
 * Introduces dependency injection (e.g. constructor injection).
-* Examples on how to class with dependency, in this case an approach on mocking of the repo.
+* Example on how to loosely-couple a class dependency.
 
 BankAccountMVC
 ---------------------------------------------
@@ -26,5 +26,6 @@ This is a functional ASP.NET MVC project, *BankAccountMVC* that will be used in 
 # Setup
 1. [Clone from a remote repository in Visual Studio.](https://msdn.microsoft.com/en-us/library/hh850445.aspx#remote)
 2. Once the solution is loaded. From the Tools menu, select Library Package Manager and then click Package Manager Console.
-3. In the console, type: update-database
-4. The previous step will create a database called *BankAccount* and schema based on EF Code First migrations. Add a user in the UserProfile table and you should now be able to run the MVC application.
+3. Set the Default Project to BankAccountDB. 
+4. In the console, type the following and hit enter: update-database
+5. The previous step will create a database called *BankAccount* and schema based on EF Code First migrations. Add a user in the UserProfile table and you should now be able to run the MVC application.
