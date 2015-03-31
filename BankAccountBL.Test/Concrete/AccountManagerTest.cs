@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
-using BankAccountBL.Concrete;
 using NUnit.Framework;
 using Moq;
 using BankAccountDB.Abstract;

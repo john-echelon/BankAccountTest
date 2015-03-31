@@ -20,25 +20,20 @@ namespace BankAccountDB.Concrete
 
         public void UpdateUserProfile(UserProfile entity)
         {
-            context.Entry(entity).State = entity.UserProfileID == 0 ? EntityState.Added : EntityState.Modified;
+            if (entity.UserProfileID == 0)
+            {
+                context.UserProfiles.Add(entity);
+            }
+            else
+            {
+                UserProfile dbEntry = context.UserProfiles.Find(entity.UserProfileID);
+                if (dbEntry != null)
+                {
+                    dbEntry.UserProfileID = entity.UserProfileID;
+                    dbEntry.UserName = entity.UserName;
+                }
+            }
         }
-
-        //public void SaveUserProfile(UserProfile entity)
-        //{
-        //    if (entity.UserProfileID == 0)
-        //    {
-        //        context.UserProfiles.Add(entity);
-        //    }
-        //    else
-        //    {
-        //        UserProfile dbEntry = context.UserProfiles.Find(entity.UserProfileID);
-        //        if (dbEntry != null)
-        //        {
-        //            dbEntry.UserProfileID = entity.UserProfileID;
-        //            dbEntry.UserName = entity.UserName;
-        //        }
-        //    }
-        //}
 
         public UserProfile DeleteUserProfile(int entityID)
         {
