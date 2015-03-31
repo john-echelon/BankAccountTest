@@ -4,10 +4,11 @@
 }
 
 <h2>@Html.LabelForModel()</h2>
-
-Account User: @Html.DisplayFor(m => m.UserName)
-
-<table class="Grid">
+<div class="form-group">
+     <label for="AccountUser">User Name: </label>
+     @Html.DisplayFor(m => m.UserName, new { @class = "" })
+</div>
+<table class="table table-hover">
     <tr>
         <th>
             Account ID
@@ -45,10 +46,10 @@ Account User: @Html.DisplayFor(m => m.UserName)
                 @Html.DisplayFor(modelItem => item.StatusOfAccount)
             </td>
             <td>
-                @Html.ActionLink("Remove", "Delete", new { id = item.BasicAccountID })
+                @Html.ActionLink("Remove", "Delete", new { id = item.BasicAccountID }, new { @class = "btn btn-default" })
             </td>
         </tr>
     }
 </table>
 
-@Html.ActionLink("Create Account", "Create")
+@Html.ActionLink("Create Account", "Create", null, new { @class= "btn btn-default" })

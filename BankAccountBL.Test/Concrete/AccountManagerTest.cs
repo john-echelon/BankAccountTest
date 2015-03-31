@@ -142,7 +142,8 @@ namespace BankAccountBL.Test.Concrete
         }
 
         [Test]
-        public void Withdraw_GivenAnAmount_WithdrawAndUpdateTheBalance() { }
+        public void Withdraw_GivenAnAmount_WithdrawAndUpdateTheBalance() { 
+        }
 
         [Test]
         public void Withdraw_GivenAnAmountGreaterThanTheBalance_ThrowAnExceptionForOverdraftProtection() { }
