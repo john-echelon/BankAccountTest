@@ -7,14 +7,16 @@ using Moq;
 using BankAccountDB.Abstract;
 using BankAccountBL.Concrete;
 using BankAccountDB.Concrete.Entities;
+using TestUtilities;
 namespace BankAccountBL.Test.Concrete
 {
     [TestFixture]
     public class AccountManagerTest
     {
-        AccountManager manager;
-        BasicAccount decoyAcct;
-        UserProfile decoyUser;
+        private AccountManager manager;
+        private BasicAccount decoyAcct;
+        private UserProfile decoyUser;
+        private int nonExistentAccountID = -9;
 
         [SetUp]
         public void BankAccountTestSetup()
@@ -23,7 +25,7 @@ namespace BankAccountBL.Test.Concrete
             decoyAcct = new BasicAccount
             {
                 BasicAccountID = 28,
-                Balance = 1800,
+                Balance = 2000,
                 AccountType = BasicAccount.BankType.RegularChecking,
                 StatusOfAccount = BasicAccount.AccountStatus.Open
             };
@@ -47,10 +49,11 @@ namespace BankAccountBL.Test.Concrete
                 decoyAcct
             }.AsQueryable();
 
-            decoyUser = new UserProfile {
-                    UserProfileID = 1,
-                    UserName = "AnnieUser",
-                    Accounts = decoyAccounts.ToList()
+            decoyUser = new UserProfile
+            {
+                UserProfileID = 1,
+                UserName = "AnnieUser",
+                Accounts = decoyAccounts.ToList()
             };
 
             var decoyUsers = new UserProfile[]{
@@ -78,7 +81,7 @@ namespace BankAccountBL.Test.Concrete
             //Arrange
             var expected = decoyUser;
             //Act
-            var actual = manager.GetUserProfile(1);
+            var actual = manager.GetUserProfile(decoyUser.UserProfileID);
 
             //Assert
             Assert.AreSame(expected, actual);
@@ -94,7 +97,6 @@ namespace BankAccountBL.Test.Concrete
             Assert.IsNull(actual);
         }
 
-
         [Test]
         public void CreateBankAccount_OnCreation_CreateNewAccount()
         {
@@ -108,21 +110,30 @@ namespace BankAccountBL.Test.Concrete
             };
 
             //Note this statement is now part of the arrange;
-            manager.GetUserProfile(1);
+            manager.GetUserProfile(decoyUser.UserProfileID);
             //alternatively the arrange setup could have been: manager.CurrentUser = decoyUser;
 
             //Act
             var actual = manager.CreateBankAccount();
+
+            //Assert
+            /* 
+             * Problem: The line below will use the default Object.Equals implementation which compares if the references are the same, this is not what we intended as an equality check
+             * Assert.AreSame(expected, actual);
+             * 
+             * Solution: Override the Equals for this class or base class. Otherwise build a helper method as in this example.
+             */
+            AssertEquals.PropertyValuesAreEquals(expected, actual);
         }
 
         [Test]
         public void GetBankAccount_GivenAnExistingAccountID_FetchAccount()
         {
             //Arrange
-            var user = manager.GetUserProfile(1);
+            var user = manager.GetUserProfile(decoyUser.UserProfileID);
             var expected = decoyAcct;
             //Act
-            var actual = manager.GetBankAccount(28);
+            var actual = manager.GetBankAccount(decoyAcct.BasicAccountID);
 
             //Assert
             Assert.AreSame(expected, actual);
@@ -132,23 +143,64 @@ namespace BankAccountBL.Test.Concrete
         public void GetBankAccount_GivenAnNonExistentAccountID_FetchAccount()
         {
             //Arrange
-            var user = manager.GetUserProfile(1);
+            var user = manager.GetUserProfile(decoyUser.UserProfileID);
             var expected = decoyAcct;
             //Act
-            var actual = manager.GetBankAccount(29);
+            var actual = manager.GetBankAccount(nonExistentAccountID);
 
             //Assert
             Assert.IsNull(actual);
         }
 
         [Test]
-        public void Withdraw_GivenAnAmount_WithdrawAndUpdateTheBalance() { 
+        public void Withdraw_GivenAnAmount_WithdrawAndUpdateTheBalance()
+        {
+            //Arrange
+            var user = manager.GetUserProfile(decoyUser.UserProfileID);
+            var accountToManage = manager.GetBankAccount(decoyAcct.BasicAccountID);
+            var expectedBalance = 1500m;
+            //Act
+            manager.Withdraw(500);
+
+            //Assert
+            Assert.AreEqual(expectedBalance, accountToManage.Balance);
         }
 
         [Test]
-        public void Withdraw_GivenAnAmountGreaterThanTheBalance_ThrowAnExceptionForOverdraftProtection() { }
+        public void Withdraw_GivenAnAmountGreaterThanTheBalance_ThrowAnExceptionForOverdraftProtection()
+        {
+            //Arrange
+            /*
+             * We could have setup the data via the typical repo setup, but technically we would no longer but unit testing. 
+             * In this manager implementation we simply setup the current Account data directly.
+             * var user = manager.GetUserProfile(decoyUser.UserProfileID);
+             * var accountToManage = manager.GetBankAccount(decoyAcct.BasicAccountID);
+             */
+            manager.CurrentAccount = decoyAcct;
+            //Act, Assert
+            Exception ex = Assert.Throws<Exception>(() => manager.Withdraw(20000));
+
+            Assert.That(ex.Message, Is.EqualTo("Overdraft protection enacted!"));
+        }
 
         [Test]
-        public void Withdraw_GivenAnAmount_DepositAndUpdateTheBalance() { }
+        public void Deposit_GivenAnAmount_DepositAndUpdateTheBalance()
+        {
+            //Arrange
+
+            /*
+             * We could have setup the data via the typical repo setup, but technically we would no longer but unit testing. 
+             * In this manager implementation we simply setup the current Account data directly.
+             * var user = manager.GetUserProfile(decoyUser.UserProfileID);
+             * var accountToManage = manager.GetBankAccount(decoyAcct.BasicAccountID);
+             */
+            manager.CurrentAccount = decoyAcct;
+            var expectedBalance = 2500;
+            //Act
+            manager.Deposit(500);
+
+            //Assert
+            Assert.AreEqual(expectedBalance, manager.CurrentAccount.Balance);
+        }
     }
 }

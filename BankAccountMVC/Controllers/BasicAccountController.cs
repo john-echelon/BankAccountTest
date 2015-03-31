@@ -11,13 +11,14 @@ namespace BankAccountMVC.Controllers
     public class BasicAccountController : Controller
     {
         private BankAccountRepo repo = new BankAccountRepo();
+        private AccountManager am;
         public BasicAccountController() {
+            am = new AccountManager(repo);
         }
         //
         // GET: /BasicAccount/
         public ActionResult Index(int id = 1)
         {
-            AccountManager am = new AccountManager(repo);
             am.GetUserProfile(id);
             return View(am.CurrentUser);
         }
@@ -25,13 +26,21 @@ namespace BankAccountMVC.Controllers
         public ActionResult Create()
         {
             ViewBag.Title = "Create Account";
-            var repo = new BankAccountRepo();
-            AccountManager am = new AccountManager(repo);
             am.GetUserProfile(1);
 
             var model = am.CreateBankAccount();
 
             return View("Edit", model);
+        }
+
+        public JsonResult CreateJson()
+        {
+            ViewBag.Title = "Create Account";
+            am.GetUserProfile(1);
+
+            var model = am.CreateBankAccount();
+
+            return Json( new{ Success= true, Model= model});
         }
 
         [HttpPost]
@@ -40,7 +49,6 @@ namespace BankAccountMVC.Controllers
             ViewBag.Title = "Edit Account";
             if (ModelState.IsValid)
             {
-                AccountManager am = new AccountManager(repo);
                 am.GetUserProfile(1);
                 am.CurrentAccount = model;
 
@@ -52,13 +60,11 @@ namespace BankAccountMVC.Controllers
             return View(model);
         }
 
-
         // GET: /BasicAccount/Edit/5
         public ActionResult Edit(int id)
         {
             ViewBag.Title = "Edit Account";
 
-            AccountManager am = new AccountManager(repo);
             am.GetUserProfile(1);
             var model = am.GetBankAccount(id);
             return View(model);
@@ -67,7 +73,6 @@ namespace BankAccountMVC.Controllers
         // GET: /BasicAccount/Delete/5
         public ActionResult Delete(int id)
         {
-            AccountManager am = new AccountManager(repo);
             am.GetUserProfile(1);
             var model = am.DeleteBankAccount(id);
             am.Save();
