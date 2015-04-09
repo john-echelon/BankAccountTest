@@ -6,7 +6,7 @@ using Moq;
 using BankAccountDB.Abstract;
 using BankAccountBL.Concrete;
 using BankAccountDB.Concrete.Entities;
-using TestUtilities;
+using TestUtilities.Helpers;
 namespace BankAccountBL.Test.Concrete
 {
     [TestFixture]
@@ -17,6 +17,7 @@ namespace BankAccountBL.Test.Concrete
         private UserProfile decoyUser;
         private int nonExistentAccountID = -9;
 
+        Mock<IBankAccountRepo> mockRepo;
         [SetUp]
         public void BankAccountTestSetup()
         {
@@ -46,7 +47,7 @@ namespace BankAccountBL.Test.Concrete
                     StatusOfAccount = BasicAccount.AccountStatus.Open
                 },
                 decoyAcct
-            }.AsQueryable();
+            }.ToList();
 
             decoyUser = new UserProfile
             {
@@ -62,38 +63,47 @@ namespace BankAccountBL.Test.Concrete
                     UserName = "DecoyOctopus",
                     Accounts = null
                 }
-            }.AsQueryable();
+            }.ToList();
 
 
-            Mock<IBankAccountRepo> mockRepo = new Mock<IBankAccountRepo>();
+            mockRepo = new Mock<IBankAccountRepo>();
             mockRepo.Setup(m => m.UserProfiles).Returns(
                decoyUsers
             );
-            //mockRepo.Setup(m => m.BasicAccounts).Returns(decoyAccounts);
+
+            mockRepo.Setup(m => m.UserProfileFindByID(1)).Returns(decoyUser);
+            mockRepo.Setup(m => m.BasicAccounts).Returns(decoyAccounts);
 
             manager = new AccountManager(mockRepo.Object);
         }
 
         [Test]
-        public void GetUserProfile_GivenAUserProfileIDExists_FetchAUser()
+        public void GetUserProfile_GivenAUserProfileIDExists_CurrentUserSet()
         {
+            /*
+             * This demonstrates the focuse that we are not validating the result from the repo but what the manager does with it. 
+             * Other than for demonstration, this particular implementation would be too trivial to test.
+             */
             //Arrange
             var expected = decoyUser;
             //Act
-            var actual = manager.GetUserProfile(decoyUser.UserProfileID);
-
+            manager.GetUserProfile(decoyUser.UserProfileID);
+            var actual = manager.CurrentUser;
             //Assert
             Assert.AreSame(expected, actual);
+            mockRepo.Verify(db => db.UserProfileFindByID(decoyUser.UserProfileID));
         }
 
         [Test]
         public void GetUserProfile_GivenANonExistentUserProfileID_ExpectNull()
         {
             //Act
-            var actual = manager.GetUserProfile(12);
+            manager.GetUserProfile(12);
+            var actual = manager.CurrentUser;
 
             //Assert
             Assert.IsNull(actual);
+            mockRepo.Verify(db => db.UserProfileFindByID(12));
         }
 
         [Test]
@@ -129,7 +139,7 @@ namespace BankAccountBL.Test.Concrete
         public void GetBankAccount_GivenAnExistingAccountID_FetchAccount()
         {
             //Arrange
-            var user = manager.GetUserProfile(decoyUser.UserProfileID);
+            manager.CurrentUser = decoyUser;
             var expected = decoyAcct;
             //Act
             var actual = manager.GetBankAccount(decoyAcct.BasicAccountID);
@@ -142,7 +152,7 @@ namespace BankAccountBL.Test.Concrete
         public void GetBankAccount_GivenAnNonExistentAccountID_FetchAccount()
         {
             //Arrange
-            var user = manager.GetUserProfile(decoyUser.UserProfileID);
+            manager.CurrentUser = decoyUser;
             var expected = decoyAcct;
             //Act
             var actual = manager.GetBankAccount(nonExistentAccountID);
@@ -155,7 +165,7 @@ namespace BankAccountBL.Test.Concrete
         public void Withdraw_GivenAnAmount_WithdrawAndUpdateTheBalance()
         {
             //Arrange
-            var user = manager.GetUserProfile(decoyUser.UserProfileID);
+            manager.CurrentUser = decoyUser;
             var accountToManage = manager.GetBankAccount(decoyAcct.BasicAccountID);
             var expectedBalance = 1500m;
             //Act

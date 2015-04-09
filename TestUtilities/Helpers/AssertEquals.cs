@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using NUnit.Framework;
-namespace TestUtilities
+namespace TestUtilities.Helpers
 {
     public static class AssertEquals
     {

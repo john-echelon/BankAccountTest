@@ -9,13 +9,23 @@ using System.Data.Entity;
 
 namespace BankAccountDB.Concrete
 {
-    public class BankAccountRepo : BankAccountDB.Abstract.IBankAccountRepo //:IBankAccountRepo
+    public class BankAccountRepo : IBankAccountRepo
     {
-        private EFDbContext context = new EFDbContext();
-    
-        public IQueryable<UserProfile> UserProfiles
+        private EFDbContext context;
+
+        public BankAccountRepo(EFDbContext context)
         {
-            get { return context.UserProfiles.Include(user => user.Accounts); }
+            this.context = context;
+        }
+
+        public List<UserProfile> UserProfiles
+        {
+            get { return context.UserProfiles.Include("Accounts").ToList(); }
+        }
+
+        public UserProfile UserProfileFindByID(int entityID)
+        {
+            return context.UserProfiles.Where(entity => entity.UserProfileID == entityID).SingleOrDefault();
         }
 
         public void UpdateUserProfile(UserProfile entity)
@@ -45,20 +55,28 @@ namespace BankAccountDB.Concrete
 
             return dbEntry;
         }
-       
-        public IQueryable<BasicAccount> BasicAccounts
+
+        public List<BasicAccount> BasicAccounts
         {
-            get { return context.BasicAccounts; }
+            get { return context.BasicAccounts.ToList(); }
+        }
+
+        public BasicAccount BasicAccountFindByID(int entityID)
+        {
+            return context.BasicAccounts.Where(entity => entity.BasicAccountID == entityID).SingleOrDefault();
         }
 
         public void UpdateBasicAccount(BasicAccount entity)
         {
-            if( entity.BasicAccountID == 0 ){
-                context.Entry(entity).State =EntityState.Added;
+            if (entity.BasicAccountID == 0)
+            {
+                context.Entry(entity).State = EntityState.Added;
             }
-            else{
+            else
+            {
                 var dbEntry = context.BasicAccounts.Find(entity.BasicAccountID);
-                if (dbEntry != null) {
+                if (dbEntry != null)
+                {
                     dbEntry.AccountType = entity.AccountType;
                     dbEntry.Balance = entity.Balance;
                     dbEntry.InterestRate = entity.InterestRate;
@@ -78,6 +96,6 @@ namespace BankAccountDB.Concrete
             return dbEntry;
         }
 
-        public void SaveChanges(){  context.SaveChanges();  }
+        public void SaveChanges() { context.SaveChanges(); }
     }
 }

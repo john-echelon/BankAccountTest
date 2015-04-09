@@ -20,7 +20,7 @@ namespace BankAccountBL.Concrete
         }
 
         public UserProfile GetUserProfile(int id) {
-            CurrentUser = repo.UserProfiles.Where(up => up.UserProfileID == id).SingleOrDefault();
+            CurrentUser = repo.UserProfileFindByID(id);
             return CurrentUser;
         }
 
@@ -43,7 +43,6 @@ namespace BankAccountBL.Concrete
 
         public BasicAccount GetBankAccount(int id)
         {
-            //CurrentAccount = repo.BasicAccounts.Where(acct => acct.BasicAccountID == id).SingleOrDefault();
             CurrentAccount = CurrentUser.Accounts.Where(acct => acct.BasicAccountID == id).SingleOrDefault();
 
             return CurrentAccount;

@@ -1,5 +1,6 @@
 namespace BankAccountDB.Migrations
 {
+    using BankAccountDB.Concrete.Entities;
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
@@ -26,6 +27,10 @@ namespace BankAccountDB.Migrations
             //      new Person { FullName = "Rowan Miller" }
             //    );
             //
+
+            context.UserProfiles.AddOrUpdate(
+                u => u.UserProfileID,
+                new UserProfile {UserProfileID=1, UserName = "AnnieUser", FirstName="Annie" });
         }
     }
 }

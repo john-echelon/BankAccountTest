@@ -9,6 +9,7 @@ using System.Web.Mvc;
 
 namespace BankAccountDB.Concrete.Entities
 {
+    [DisplayName("Basic Account")]
     public class BasicAccount
     {
         [HiddenInput(DisplayValue = true)]
@@ -16,7 +17,6 @@ namespace BankAccountDB.Concrete.Entities
 
         public decimal Balance { set; get; }
         public double InterestRate { set; get; }
-        [HiddenInput(DisplayValue = false)]
         public int UserProfileID { set; get; }
         [UIHint("Enum")]
         public AccountStatus StatusOfAccount { get; set; }

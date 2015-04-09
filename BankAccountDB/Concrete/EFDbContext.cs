@@ -11,8 +11,8 @@ namespace BankAccountDB.Concrete
     public class EFDbContext : DbContext
     {
         public EFDbContext() : base("BankAccount") { }
-        public DbSet<UserProfile> UserProfiles { get; set; }
-        public DbSet<BasicAccount> BasicAccounts { get; set; }
+        public virtual DbSet<UserProfile> UserProfiles { get; set; }
+        public virtual DbSet<BasicAccount> BasicAccounts { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

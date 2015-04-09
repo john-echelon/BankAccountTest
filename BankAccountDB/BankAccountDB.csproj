@@ -95,6 +95,10 @@
     <Compile Include="Migrations\201503271940345_Added_UserProfile.Accounts.Designer.cs">
       <DependentUpon>201503271940345_Added_UserProfile.Accounts.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201504022001547_AddedUserProfile.FirstName.cs" />
+    <Compile Include="Migrations\201504022001547_AddedUserProfile.FirstName.Designer.cs">
+      <DependentUpon>201504022001547_AddedUserProfile.FirstName.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -114,6 +118,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201503271940345_Added_UserProfile.Accounts.resx">
       <DependentUpon>201503271940345_Added_UserProfile.Accounts.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201504022001547_AddedUserProfile.FirstName.resx">
+      <DependentUpon>201504022001547_AddedUserProfile.FirstName.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
