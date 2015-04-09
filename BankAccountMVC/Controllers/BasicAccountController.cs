@@ -17,19 +17,18 @@ namespace BankAccountMVC.Controllers
         public BasicAccountController(IAccountManager manager)
         {
             this.manager = manager;
+            manager.GetUserProfile(defaultUserId);
         }
         //
         // GET: /BasicAccount/
-        public ActionResult Index(int id = 1)
+        public ActionResult Index()
         {
-            manager.GetUserProfile(id);
             return View(manager.CurrentUser);
         }
 
         public ActionResult Create()
         {
             ViewBag.Title = "Create Account";
-            manager.GetUserProfile(defaultUserId);
 
             var model = manager.CreateBankAccount();
 
@@ -39,7 +38,6 @@ namespace BankAccountMVC.Controllers
         public JsonResult CreateJson()
         {
             ViewBag.Title = "Create Account";
-            manager.GetUserProfile(defaultUserId);
 
             var model = manager.CreateBankAccount();
 
@@ -50,9 +48,13 @@ namespace BankAccountMVC.Controllers
         public ActionResult Edit(BasicAccount model)
         {
             ViewBag.Title = "Edit Account";
+            if (model.UserProfileID <= 0) {
+                this.ViewData.ModelState.AddModelError("UserProfileID", "No user profile associated to this account");
+            }
+
+
             if (ModelState.IsValid)
             {
-                manager.GetUserProfile(defaultUserId);
                 manager.CurrentAccount = model;
 
                 //Save and Redirect to Index
@@ -68,7 +70,6 @@ namespace BankAccountMVC.Controllers
         {
             ViewBag.Title = "Edit Account";
 
-            manager.GetUserProfile(defaultUserId);
             var model = manager.GetBankAccount(id);
             return View(model);
         }
@@ -76,7 +77,6 @@ namespace BankAccountMVC.Controllers
         // GET: /BasicAccount/Delete/5
         public ActionResult Delete(int id)
         {
-            manager.GetUserProfile(defaultUserId);
             var model = manager.DeleteBankAccount(id);
             manager.Save();
             return RedirectToAction("Index");

@@ -5,7 +5,7 @@ using System.Reflection;
 using NUnit.Framework;
 using Moq;
 
-namespace BankAccountMVC.Tests
+namespace BankAccountMVC.Test
 {
     [TestFixture]
     public class RouteTests
