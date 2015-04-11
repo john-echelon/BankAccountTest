@@ -1,3 +1,10 @@
+# Setup
+1. [Clone from a remote repository in Visual Studio.](https://msdn.microsoft.com/en-us/library/hh850445.aspx#remote)
+2. Once the solution is loaded. From the Tools menu, select Library Package Manager and then click Package Manager Console.
+3. Set the Default Project to BankAccountDB. 
+4. In the console, type the following and hit enter: update-database
+5. The previous step will create a database called *BankAccount* and schema based on EF Code First migrations. A user should automatically be seeded in the UserProfile table and you should now be able to run the MVC application.
+6. 
 # BankAccountTest
 This is a simple Bank Account Manage ASP.NET MVC application to demonstrate coverage of unit tests from the repository layer, the business layer to the presentation layer, introducing concepts such as mocking and dependency injection.  Upon studying this project you will learn that the goals of EF6 and ASP.NET MVC was designed to be written for unit testable solutions.
 
@@ -47,10 +54,3 @@ Tests BankAccountMVC\App_Start\RouteConfig.cs
 
 Tests incoming route urls based on RouteConfig settings.
 * Demonstrates how to test for matching and non matching segments defined by the RouteConfig.
-
-# Setup
-1. [Clone from a remote repository in Visual Studio.](https://msdn.microsoft.com/en-us/library/hh850445.aspx#remote)
-2. Once the solution is loaded. From the Tools menu, select Library Package Manager and then click Package Manager Console.
-3. Set the Default Project to BankAccountDB. 
-4. In the console, type the following and hit enter: update-database
-5. The previous step will create a database called *BankAccount* and schema based on EF Code First migrations. A user should automatically be seeded in the UserProfile table and you should now be able to run the MVC application.
