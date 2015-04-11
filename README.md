@@ -4,7 +4,8 @@
 3. Set the Default Project to BankAccountDB. 
 4. In the console, type the following and hit enter: update-database
 5. The previous step will create a database called *BankAccount* and schema based on EF Code First migrations. A user should automatically be seeded in the UserProfile table and you should now be able to run the MVC application.
-6. 
+6. Clean and Rebuild solution. Set BankAccountMVC as start up project to run the web app. 
+
 # BankAccountTest
 This is a simple Bank Account Manage ASP.NET MVC application to demonstrate coverage of unit tests from the repository layer, the business layer to the presentation layer, introducing concepts such as mocking and dependency injection.  Upon studying this project you will learn that the goals of EF6 and ASP.NET MVC was designed to be written for unit testable solutions.
 
